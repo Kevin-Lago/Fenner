@@ -1,5 +1,4 @@
 import logging
-from src.lucid_logger import LucidLogger
 from src.lucid_loading_bar import LucidLoadingBar
 from src import lucid_logging_formaters
 from src import lucid_logging_handlers
