@@ -4,14 +4,14 @@ import logging
 
 class LucidStreamFormatter(logging.Formatter):
     reset = "\033[38;2;200;200;200m" if not sys.stdout.isatty() else ''
-    red = "\033[91m"
-    yellow = "\033[93m"
-    green = "\033[92m"
-    # lime = "\033[38;2;0;255;0m"
-    cyan = "\033[96m"
-    blue = "\033[94m"
-    # purple = "\033[38;2;0;0;150m"
-    magenta = "\033[95"
+    white = "\033[38;2;255;255;255m" if not sys.stdout.isatty() else ''
+    red = "\033[38;2;255;0;0m" if not sys.stdout.isatty() else ''
+    yellow = "\033[38;2;255;255;0m" if not sys.stdout.isatty() else ''
+    green = "\033[38;2;0;150;0m" if not sys.stdout.isatty() else ''
+    lime = "\033[38;2;0;255;0m" if not sys.stdout.isatty() else ''
+    cyan = "\033[38;2;0;255;255m" if not sys.stdout.isatty() else ''
+    blue = "\033[38;2;0;0;255m" if not sys.stdout.isatty() else ''
+    purple = "\033[38;2;0;0;150m" if not sys.stdout.isatty() else ''
     format = "[%(asctime)s][$COLOR%(levelname)s$RESET]$FILE$LINE %(message)s$RESET"
 
     FORMATS = {
@@ -27,7 +27,7 @@ class LucidStreamFormatter(logging.Formatter):
         logging.INFO: reset + format.replace("$COLOR", cyan if True else '').replace("$RESET", reset)
         .replace("$FILE", "").replace("$LINE", ""),
 
-        logging.DEBUG: reset + format.replace("$COLOR", magenta if True else '').replace("$RESET", reset)
+        logging.DEBUG: reset + format.replace("$COLOR", purple if True else '').replace("$RESET", reset)
         .replace("$FILE", "").replace("$LINE", ""),
     }
 
