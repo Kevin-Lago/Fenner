@@ -19,19 +19,18 @@ class LucidTimedRotatingFileHandler(TimedRotatingFileHandler):
         self.rolloverAt = self.rolloverAt + self.interval
 
     def generateFileName(self):
-        date_format = ""
+        date_format = "%Y-%m-%d %H%M%S"
         return datetime.now().strftime(date_format)
 
 
 class LucidStreamHandler(logging.StreamHandler):
     def __init__(self):
         logging.StreamHandler.__init__(self)
+        self.return_carriage = '\r'
 
     def emit(self, record):
         message = self.format(record)
-        stream = self.stream
-        stream.write(message + self.terminator)
+        self.stream.write(self.return_carriage + message + self.terminator)
         if logging.loading_bar.is_loading:
-            stream.write(logging.loading_bar.get_loading_bar())
-            logging.loading_bar.progress_loading_bar()
-        self.flush()
+            self.stream.write(self.return_carriage + logging.loading_bar.get_bar())
+        # self.flush()

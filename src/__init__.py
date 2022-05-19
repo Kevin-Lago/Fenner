@@ -3,16 +3,19 @@ from src.lucid_loading_bar import LucidLoadingBar
 from src import lucid_logging_formaters
 from src import lucid_logging_handlers
 
-if not hasattr(logging, 'loading_bar'):
-    setattr(logging, 'loading_bar', LucidLoadingBar())
-
+NAME = 'LucidLogger'
 DEBUG = True
 COLORED_LOGS = True
+LOG_DIRECTORY = './logs/'
+LOG_ROTATION_TIME = 'midnight'
+LOG_INTERVAL_RATE = 1
+LOG_FILE_EXTENSION = 'log'
+
 lucid_rotating_file_handler = lucid_logging_handlers.LucidTimedRotatingFileHandler(
-    directory='./logs/',
-    when='midnight',
-    interval=1,
-    file_extension='log'
+    directory=LOG_DIRECTORY,
+    when=LOG_ROTATION_TIME,
+    interval=LOG_INTERVAL_RATE,
+    file_extension=LOG_FILE_EXTENSION
 )
 lucid_rotating_file_handler.setFormatter(lucid_logging_formaters.LucidFileFormatter())
 lucid_stream_handler = lucid_logging_handlers.LucidStreamHandler()
@@ -22,14 +25,14 @@ logging.basicConfig(
     handlers=[lucid_stream_handler, lucid_rotating_file_handler]
 )
 
-logger = logging.getLogger("Mercury")
+logger = logging.getLogger(__name__)
 
-logger.critical("Critical Test")
-logger.error("Error Test")
-logger.warning("Warning Test")
-logger.info("Info Test")
-# logger.init("Init Test")
-logger.debug("Debug Test")
+
+def add_loading_bar(loading_bar):
+    if hasattr(logging, 'loading_bar'):
+        raise AttributeError('Loading bar already defined in logging module')
+
+    setattr(logging, 'loading_bar', loading_bar)
 
 
 def add_logging_level(level_name, level_num, method_name=None):
@@ -54,5 +57,3 @@ def add_logging_level(level_name, level_num, method_name=None):
     setattr(logging, level_name, level_num)
     setattr(logging.getLoggerClass(), method_name, log_for_level)
     setattr(logging, method_name, log_to_root)
-
-
