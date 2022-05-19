@@ -2,7 +2,6 @@ import logging
 
 
 class LucidStreamFormatter(logging.Formatter):
-    # 38;2;255;255;255m
     grey = "\033[38;2;200;200;200m"
     white = "\033[38;2;255;255;255m"
     red = "\033[38;2;255;0;0m"
@@ -12,7 +11,7 @@ class LucidStreamFormatter(logging.Formatter):
     cyan = "\033[38;2;0;255;255m"
     blue = "\033[38;2;0;0;255m"
     purple = "\033[38;2;0;0;150m"
-    format = "[%(asctime)s][$COLOR%(levelname)s$RESET]$FILE$LINE %(message)s"
+    format = "[%(asctime)s][$COLOR%(levelname)s$RESET]$FILE$LINE %(message)s$RESET"
 
     FORMATS = {
         logging.CRITICAL: grey + format.replace("$COLOR", green if True else '').replace("$RESET", grey)
@@ -31,9 +30,12 @@ class LucidStreamFormatter(logging.Formatter):
         .replace("$FILE", "").replace("$LINE", ""),
     }
 
-    def __init__(self, datefmt=None):
+    def add_level_format(self, level_no, format=None):
+        self.FORMATS[level_no] = format if format else self.format
+
+    def __init__(self, format=None, datefmt=None):
+        # self.format = format if format else "[%(asctime)s][$COLOR%(levelname)s$RESET]$FILE$LINE %(message)s"
         self.datefmt = datefmt if datefmt else "%m/%d/%Y %H:%M:%S"
-        # for level in
 
     def format(self, record):
         log_format = self.FORMATS.get(record.levelno)
