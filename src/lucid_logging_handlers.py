@@ -1,3 +1,5 @@
+import sys
+import os
 import logging
 from datetime import datetime
 from logging.handlers import TimedRotatingFileHandler
@@ -29,8 +31,9 @@ class LucidStreamHandler(logging.StreamHandler):
         self.return_carriage = '\r'
 
     def emit(self, record):
+        if logging.loading_bar.is_loading:
+            self.stream.write(self.return_carriage + logging.loading_bar.get_clear_bar() + self.return_carriage)
         message = self.format(record)
         self.stream.write(self.return_carriage + message + self.terminator)
         if logging.loading_bar.is_loading:
-            self.stream.write(self.return_carriage + logging.loading_bar.get_bar())
-        # self.flush()
+            self.stream.write(self.return_carriage + logging.loading_bar.get_bar() + self.return_carriage)

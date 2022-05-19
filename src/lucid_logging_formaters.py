@@ -1,32 +1,33 @@
+import sys
 import logging
 
 
 class LucidStreamFormatter(logging.Formatter):
-    grey = "\033[38;2;200;200;200m"
-    white = "\033[38;2;255;255;255m"
-    red = "\033[38;2;255;0;0m"
-    yellow = "\033[38;2;255;255;0m"
-    green = "\033[38;2;0;150;0m"
-    lime = "\033[38;2;0;255;0m"
-    cyan = "\033[38;2;0;255;255m"
-    blue = "\033[38;2;0;0;255m"
-    purple = "\033[38;2;0;0;150m"
+    reset = "\033[38;2;200;200;200m" if not sys.stdout.isatty() else ''
+    red = "\033[91m"
+    yellow = "\033[93m"
+    green = "\033[92m"
+    # lime = "\033[38;2;0;255;0m"
+    cyan = "\033[96m"
+    blue = "\033[94m"
+    # purple = "\033[38;2;0;0;150m"
+    magenta = "\033[95"
     format = "[%(asctime)s][$COLOR%(levelname)s$RESET]$FILE$LINE %(message)s$RESET"
 
     FORMATS = {
-        logging.CRITICAL: grey + format.replace("$COLOR", green if True else '').replace("$RESET", grey)
+        logging.CRITICAL: reset + format.replace("$COLOR", red if True else '').replace("$RESET", reset)
         .replace("$FILE", "[%(filename)s:").replace("$LINE", "%(lineno)d]"),
 
-        logging.ERROR: grey + format.replace("$COLOR", lime if True else '').replace("$RESET", grey)
+        logging.ERROR: reset + format.replace("$COLOR", red if True else '').replace("$RESET", reset)
         .replace("$FILE", "[%(filename)s:").replace("$LINE", "%(lineno)d]"),
 
-        logging.WARNING: grey + format.replace("$COLOR", blue if True else '').replace("$RESET", grey)
+        logging.WARNING: reset + format.replace("$COLOR", yellow if True else '').replace("$RESET", reset)
         .replace("$FILE", "[%(filename)s:").replace("$LINE", "%(lineno)d]"),
 
-        logging.INFO: grey + format.replace("$COLOR", purple if True else '').replace("$RESET", grey)
+        logging.INFO: reset + format.replace("$COLOR", cyan if True else '').replace("$RESET", reset)
         .replace("$FILE", "").replace("$LINE", ""),
 
-        logging.DEBUG: grey + format.replace("$COLOR", lime if True else '').replace("$RESET", grey)
+        logging.DEBUG: reset + format.replace("$COLOR", magenta if True else '').replace("$RESET", reset)
         .replace("$FILE", "").replace("$LINE", ""),
     }
 
