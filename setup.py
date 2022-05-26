@@ -4,8 +4,8 @@ with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="foxolot",
-    version="0.0.1",
+    name="lucid-logger",
+    version="0.0.6",
     author="Kevin Lago",
     author_email="kevinthelago@gmail.com",
     description="Python Logging Library with Loading Bar",
